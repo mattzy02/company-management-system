@@ -7,6 +7,7 @@ import {
   Post,
   Body,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -73,5 +74,15 @@ export class CompanyController {
   @ApiResponse({ status: 400, description: 'Bad request - validation error' })
   getCompanyHierarchy(@Body() hierarchyDto: CompanyHierarchyDto) {
     return this.companyService.getCompanyHierarchy(hierarchyDto);
+  }
+
+  // delete a company
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a company' })
+  @ApiParam({ name: 'id', description: 'Company ID' })
+  @ApiResponse({ status: 200, description: 'Company deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Company not found' })
+  remove(@Param('id') code: string) {
+    return this.companyService.remove(code);
   }
 }

@@ -156,7 +156,18 @@ class ApiService {
       throw new Error(`API request failed: ${response.status} ${response.statusText}`);
     }
 
-    return response.json(); // Parse and return JSON response
+    // Handle empty responses (like DELETE operations)
+    const contentLength = response.headers.get('content-length');
+    if (contentLength === '0' || response.status === 204) {
+      return undefined as T; // Return undefined for empty responses
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return response.json(); // Parse and return JSON response
+    }
+
+    return undefined as T; // Return undefined for non-JSON responses
   }
 
   /**

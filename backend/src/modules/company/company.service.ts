@@ -125,6 +125,20 @@ export class CompanyService {
     return savedCompany;
   }
 
+  async remove(code: string): Promise<void> {
+    const company = await this.companyRepository.findOne({ 
+      where: { company_code: code } 
+    });
+    
+    if (!company) {
+      throw new NotFoundException(`Company with code ${code} not found.`);
+    }
+    
+    await this.companyRepository.remove(company);
+    await this.cleanCompanyCache(code);
+    this.logger.log(`Company ${code} deleted successfully`);
+  }
+
   async queryCompanies(queryCompanyDto: FilterCompanyDto): Promise<any> {
     const cacheKey = this.generateCacheKey('query', queryCompanyDto);
     const cached = await this.cacheManager.get(cacheKey);
