@@ -844,15 +844,27 @@ export default function CompanyBarChart({ data, width = "100%", height = 500 }: 
     });
   };
 
-  // clear all filters and reset to default values
+  // clear all filters and reset to actual data ranges
   const clearFilters = () => {
+    // Calculate actual data ranges from the dataset
+    const validFoundedYears = data.map(c => c.foundedYear).filter(y => y > 0);
+    const validRevenues = data.map(c => c.annualRevenue).filter(r => r > 0);
+    const validEmployees = data.map(c => c.employees).filter(e => e > 0);
+    
+    const minFoundedYear = validFoundedYears.length > 0 ? Math.min(...validFoundedYears) : 1990;
+    const maxFoundedYear = validFoundedYears.length > 0 ? Math.max(...validFoundedYears) : 2024;
+    const minRevenue = validRevenues.length > 0 ? Math.min(...validRevenues) : 0;
+    const maxRevenue = validRevenues.length > 0 ? Math.max(...validRevenues) : 1000000000;
+    const minEmployees = validEmployees.length > 0 ? Math.min(...validEmployees) : 0;
+    const maxEmployees = validEmployees.length > 0 ? Math.max(...validEmployees) : 10000;
+    
     setFilters({
       level: [],
       country: [],
       city: [],
-      foundedYear: { start: 1990, end: 2024 },
-      annualRevenue: { min: 0, max: 1000000000 },
-      employees: { min: 0, max: 10000 },
+      foundedYear: { start: minFoundedYear, end: maxFoundedYear },
+      annualRevenue: { min: minRevenue, max: maxRevenue },
+      employees: { min: minEmployees, max: maxEmployees },
     });
   };
 
