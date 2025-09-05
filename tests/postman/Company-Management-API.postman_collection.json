@@ -1,0 +1,1135 @@
+{
+	"info": {
+		"_postman_id": "e013bfa7-7125-4078-b0da-614372c27b1a",
+		"name": "nest_company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28206493"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "GET all company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Response Structure Check\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Company Data Validation\r",
+									"pm.test(\"Companies have required fields\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    if (responseJson.length > 0) {\r",
+									"        const company = responseJson[0];\r",
+									"        pm.expect(company).to.have.property('company_code');\r",
+									"        pm.expect(company).to.have.property('company_name');\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Type Validation\r",
+									"pm.test(\"Company data types are correct\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    if (responseJson.length > 0) {\r",
+									"        const company = responseJson[0];\r",
+									"        pm.expect(company.company_code).to.be.a('string');\r",
+									"        pm.expect(company.company_name).to.be.a('string');\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Logic Check\r",
+									"pm.test(\"All companies have valid business data\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    responseJson.forEach(company => {\r",
+									"        pm.expect(company.company_code).to.not.be.empty;\r",
+									"        pm.expect(company.company_name).to.not.be.empty;\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/company",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET C02",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Company ID Match\r",
+									"pm.test(\"Returned company has correct ID\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.company_code).to.eql('C02');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Required Fields Check\r",
+									"pm.test(\"Company has all required fields\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('company_code');\r",
+									"    pm.expect(responseJson).to.have.property('company_name');\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Type Validation\r",
+									"pm.test(\"Company data types are correct\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.company_code).to.be.a('string');\r",
+									"    pm.expect(responseJson.company_name).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Data Integrity\r",
+									"pm.test(\"Company data is business-valid\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.company_code).to.not.be.empty;\r",
+									"    pm.expect(responseJson.company_name).to.not.be.empty;\r",
+									"    pm.expect(responseJson.company_name.length).to.be.greaterThan(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/company/C02",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"C02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Filtered Results Check\r",
+									"pm.test(\"Filter returns filtered results\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Filter Logic Validation\r",
+									"pm.test(\"Filter respects search criteria\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    if (requestBody.name && responseJson.length > 0) {\r",
+									"        const company = responseJson[0];\r",
+									"        pm.expect(company.name.toLowerCase()).to.include(requestBody.name.toLowerCase());\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 4: Response Structure Validation\r",
+									"pm.test(\"Filtered companies have correct structure\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    if (responseJson.length > 0) {\r",
+									"        const company = responseJson[0];\r",
+									"        pm.expect(company).to.have.property('id');\r",
+									"        pm.expect(company).to.have.property('name');\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 5: Filter Performance Check\r",
+									"pm.test(\"Filter returns reasonable number of results\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.length).to.be.lessThan(1000); // Reasonable limit\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dimension\": \"country\",\r\n  \"filter\": {\r\n    \"level\": [3],\r\n    \"country\": [\"USA\"],\r\n    \"founded_year\": { \"start\": 1990 },\r\n    \"annual_revenue\": { \"min\": 50000 },\r\n    \"employees\": { \"max\": 1000 }\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/company/filter",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Created User Validation\r",
+									"pm.test(\"User was created successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Request Data Match\r",
+									"pm.test(\"Created user matches request data\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    pm.expect(responseJson.email).to.eql(requestBody.email);\r",
+									"    pm.expect(responseJson.name).to.eql(requestBody.name);\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Integrity Check\r",
+									"pm.test(\"Created user has valid data\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.email).to.be.a('string');\r",
+									"    pm.expect(responseJson.email).to.include('@');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Rules Validation\r",
+									"pm.test(\"Created user follows business rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);\r",
+									"    pm.expect(responseJson.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+									"    pm.expect(responseJson.name).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Test User\",\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"User\",\r\n  \"status\": \"Active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create duplicate User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 409\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Error Message Check\r",
+									"pm.test(\"Error message is correct\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.eql(\"User with this email already exists\");\r",
+									"});\r",
+									"\r",
+									"// Test 3: Error Type Validation\r",
+									"pm.test(\"Error type is Conflict\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.eql(\"Conflict\");\r",
+									"});\r",
+									"\r",
+									"// Test 4: Status Code in Response\r",
+									"pm.test(\"Response includes status code\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.statusCode).to.eql(409);\r",
+									"});\r",
+									"\r",
+									"// Test 5: Error Response Structure\r",
+									"pm.test(\"Error response has correct structure\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"    pm.expect(responseJson).to.have.property('error');\r",
+									"    pm.expect(responseJson).to.have.property('statusCode');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Duplicate User\",\r\n  \"email\": \"demo@demo.com\",\r\n  \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: User ID Match\r",
+									"pm.test(\"Returned user has correct ID\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const urlId = pm.request.url.path[1]; // Get ID from URL\r",
+									"    pm.expect(responseJson.id).to.eql(urlId);\r",
+									"});\r",
+									"\r",
+									"// Test 3: Required Fields Check\r",
+									"pm.test(\"User has all required fields\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"    pm.expect(responseJson).to.have.property('name');\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Type Validation\r",
+									"pm.test(\"User data types are correct\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.email).to.be.a('string');\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"// Test 5: User Data Business Validation\r",
+									"pm.test(\"User data meets business requirements\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.email).to.include('@');\r",
+									"    pm.expect(responseJson.name.length).to.be.greaterThan(0);\r",
+									"    pm.expect(responseJson.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdGUuY29tIiwic3ViIjoiMTI2Yzk3ZTQtMjdmZC00MjY4LWJlOGMtNzgwNzliMGM1M2I0IiwiaWF0IjoxNzUxMDMyNTA0LCJleHAiOjE3NTEwMzYxMDR9.JLVEmtGTXYANAlp2QEx6n2wZ8UihAO_P4bRPiO9FpIM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/effeda08-ebfd-400d-bb25-14213f366311",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"effeda08-ebfd-400d-bb25-14213f366311"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test with create user request\r",
+									"\r",
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Updated User Validation\r",
+									"pm.test(\"User was updated successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Update Data Verification\r",
+									"pm.test(\"User data was updated correctly\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    if (requestBody.name) {\r",
+									"        pm.expect(responseJson.name).to.eql(requestBody.name);\r",
+									"    }\r",
+									"    if (requestBody.email) {\r",
+									"        pm.expect(responseJson.email).to.eql(requestBody.email);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Consistency Check\r",
+									"pm.test(\"Updated user maintains data integrity\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.email).to.include('@');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Logic Validation\r",
+									"pm.test(\"Updated user follows business rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+									"    pm.expect(responseJson.name).to.not.be.empty;\r",
+									"    pm.expect(responseJson.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Updated User Name\",\r\n  \"email\": \"updated@example.com\",\r\n  \"role\": \"Manager\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/172e43e5-2e63-4d6a-a666-3e281e9ae380",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"172e43e5-2e63-4d6a-a666-3e281e9ae380"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test with create user request\r",
+									"\r",
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Deletion Confirmation\r",
+									"pm.test(\"User was deleted successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('message');\r",
+									"    pm.expect(responseJson.message).to.include('Deleted');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Response Structure Check\r",
+									"pm.test(\"Delete response has correct structure\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"// Test 4: Success Message Validation\r",
+									"pm.test(\"Success message is appropriate\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message.toLowerCase()).to.include('success');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Logic Check\r",
+									"pm.test(\"Delete operation follows business rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.message).to.not.be.empty;\r",
+									"    pm.expect(responseJson.message.length).to.be.greaterThan(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/1c0bd39e-bb02-405d-8d8b-8bdba6fda454",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"1c0bd39e-bb02-405d-8d8b-8bdba6fda454"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Test User\",\r\n  \"email\": \"test@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register duplicate user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Authentication Token\r",
+									"pm.test(\"Login returns access token\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('access_token');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Token Format Validation\r",
+									"pm.test(\"Access token is valid format\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.access_token).to.be.a('string');\r",
+									"    pm.expect(responseJson.access_token.length).to.be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"// Test 4: Login Success Confirmation\r",
+									"pm.test(\"Login was successful\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.access_token).to.exist;\r",
+									"    \r",
+									"    // Store token for other requests\r",
+									"    if (responseJson.access_token) {\r",
+									"        pm.globals.set(\"authToken\", responseJson.access_token);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Logic Validation\r",
+									"pm.test(\"Login follows authentication rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.access_token).to.not.be.empty;\r",
+									"    pm.expect(responseJson.access_token).to.be.a('string');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"test@test.com\",\r\n  \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJzdWIiOiI0MTY4NmYxYS0wNzBkLTQ0OWUtODEwZS0zNmQyMDA4Mjg2OWYiLCJpYXQiOjE3NTAzMzQwOTgsImV4cCI6MTc1MDMzNzY5OH0.cunROBlOu8lY8YMnT69YXx436CRP69xRVeENcBDspyI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/auth/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Profile Update Success\r",
+									"pm.test(\"Profile was updated successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('name');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Update Data Verification\r",
+									"pm.test(\"Profile data was updated correctly\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    if (requestBody.name) {\r",
+									"        pm.expect(responseJson.name).to.eql(requestBody.name);\r",
+									"    }\r",
+									"    if (requestBody.phone) {\r",
+									"        pm.expect(responseJson.phone).to.eql(requestBody.phone);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Integrity Check\r",
+									"pm.test(\"Updated profile maintains integrity\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Rules Validation\r",
+									"pm.test(\"Updated profile follows business rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"    pm.expect(responseJson.name.length).to.be.greaterThan(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJzdWIiOiJjNGY5OTAzOS1lNjZkLTQ3ZWUtOGJlYy1lNTZmNzlhZGZhMDciLCJpYXQiOjE3NTY1MDczNzMsImV4cCI6MTc1NjUxMDk3M30.zzwRKFHCMjst5zH3yYLmE_ctinnHLiDBKYoeSR8OD6g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Updated Name\",\r\n  \"phone\": \"+1 (555) 999-9999\",\r\n  \"address\": \"456 New Street\",\r\n  \"country\": \"Canada\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Password Change Success\r",
+									"pm.test(\"Password was changed successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"});\r",
+									"\r",
+									"// Test 3: User Data Integrity\r",
+									"pm.test(\"User data remains intact\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"});\r",
+									"\r",
+									"// Test 4: Response Structure\r",
+									"pm.test(\"Response has correct structure\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Logic Check\r",
+									"pm.test(\"Password change follows business rules\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "/auth/profile/password\n",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"currentPassword\": \"demo\",\r\n  \"newPassword\": \"newpassword123\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/profile/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"profile",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Demo Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Demo Profile Data\r",
+									"pm.test(\"Demo profile has required fields\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"    pm.expect(responseJson).to.have.property('name');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Demo User Validation\r",
+									"pm.test(\"Profile belongs to demo user\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.email).to.eql('demo@demo.com');\r",
+									"    pm.expect(responseJson.name).to.eql('John Doe');\r",
+									"});\r",
+									"\r",
+									"// Test 4: Data Type Validation\r",
+									"pm.test(\"Demo profile data types are correct\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.email).to.be.a('string');\r",
+									"    pm.expect(responseJson.name).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Business Data Integrity\r",
+									"pm.test(\"Demo profile meets business requirements\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+									"    pm.expect(responseJson.name).to.not.be.empty;\r",
+									"    pm.expect(responseJson.id).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJzdWIiOiJjNGY5OTAzOS1lNjZkLTQ3ZWUtOGJlYy1lNTZmNzlhZGZhMDciLCJpYXQiOjE3NTY1MDc1NTcsImV4cCI6MTc1NjUxMTE1N30.UxkR9hV9XxsitJLhvqH0etD2Sr2SshfVJcWeiVuBiEI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Update Demo Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status Code Check\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Demo Profile Update Success\r",
+									"pm.test(\"Demo profile was updated successfully\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.property('id');\r",
+									"    pm.expect(responseJson).to.have.property('email');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Update Data Verification\r",
+									"pm.test(\"Demo profile data was updated correctly\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    const requestBody = JSON.parse(pm.request.body.raw);\r",
+									"    \r",
+									"    if (requestBody.name) {\r",
+									"        pm.expect(responseJson.name).to.eql(requestBody.name);\r",
+									"    }\r",
+									"    if (requestBody.phone) {\r",
+									"        pm.expect(responseJson.phone).to.eql(requestBody.phone);\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"// Test 4: Demo User Identity\r",
+									"pm.test(\"Demo user identity is preserved\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.email).to.eql('demo@demo.com');\r",
+									"});\r",
+									"\r",
+									"// Test 5: Data Integrity Check\r",
+									"pm.test(\"Updated demo profile maintains integrity\", function () {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.be.a('string');\r",
+									"    pm.expect(responseJson.name).to.not.be.empty;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John Smith\",\r\n  \"phone\": \"+1 (555) 888-8888\",\r\n  \"address\": \"789 Demo Street\",\r\n  \"country\": \"USA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/demo/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"demo",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

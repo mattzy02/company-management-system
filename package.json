@@ -1,0 +1,44 @@
+{
+  "name": "company-management-system",
+  "version": "1.0.0",
+  "description": "A comprehensive full-stack application for managing companies, users, and accounts with authentication",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "start": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && npm run start\"",
+    "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
+    "test": "cd backend && npm run test"
+  },
+  "keywords": [
+    "nestjs",
+    "nextjs",
+    "typescript",
+    "company-management",
+    "full-stack",
+    "rest-api",
+    "react",
+    "material-ui",
+    "mysql",
+    "jwt-authentication"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/company-management-system.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "d3": "^7.9.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
